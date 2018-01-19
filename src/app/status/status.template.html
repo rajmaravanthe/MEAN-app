@@ -1,0 +1,23 @@
+<input type="text" [(ngModel)]="term" placeholder="Flight From" class="form-control statusSearch">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Flight From</th>
+          <th>Flight To</th>
+          <th>Airlines</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows | search:term">
+          <td><i class="fa fa-plane" title="to"></i>{{row.flightFrom}}</td>
+          <td><i class="fa fa-plane" title="to"></i>{{row.flightTo}}</td>
+          <td>{{row.airlines}}</td>
+          <td>{{row.dateTimeDeparture}}</td>
+          <td>{{row.dateTimeArrival}}</td>
+          <td><span *ngIf="row.status!='Available'" style="color:red">X</span>&nbsp;{{row.status}}</td>
+        </tr>
+      </tbody>
+    </table>

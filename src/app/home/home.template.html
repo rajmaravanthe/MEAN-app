@@ -1,0 +1,79 @@
+<div>
+    <!-- *ngIf="auth.authenticated()" -->
+    <div *ngIf="!book">
+        <h1>Welcome to FlightApp</h1>
+
+        <p>We're a high-growth business with a simple aim: to inspire travellers around the world and make travel search as
+            easy as possible through our world-class technology</p>
+
+
+        <button class="btn-primary" (click)="bookTicket()">Book your Flights</button>
+    </div>
+    <form #f="ngForm" *ngIf="book" (ngSubmit)="submit(f)" novalidate autocomplete="off">
+        <div class="form-group">
+            <input type="text" name="flightFrom" class="form-control" [(ngModel)]="flightDetails.flightFrom" minlength="2" maxlength="32"
+                pattern_="/^[a-zA-Z\s]*$/" required #flightFrom='ngModel' placeholder="Flight From">
+            <div *ngIf="flightFrom.errors && (flightFrom.dirty || flightFrom.touched)" class="alert alert-danger">
+                <div [hidden]="!flightFrom.errors.required">
+                    Flight From is required
+                </div>
+                <div [hidden]="!flightFrom.errors.minlength">
+                    Flight From must be at least 2 characters long.
+                </div>
+                <div [hidden]="!flightFrom.errors.maxlength">
+                    Flight From cannot be more than 32 characters long.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" name="flightTo" class="form-control" [(ngModel)]="flightDetails.flightTo" minlength="2" maxlength="32"
+                pattern_="/^[a-zA-Z\s]*$/" required #flightTo='ngModel' placeholder="Flight To">
+            <div *ngIf="flightTo.errors && (flightTo.dirty || flightTo.touched)" class="alert alert-danger">
+                <div [hidden]="!flightTo.errors.required">
+                    Flight To is required
+                </div>
+                <div [hidden]="!flightTo.errors.minlength">
+                    Flight To must be at least 2 characters long.
+                </div>
+                <div [hidden]="!flightTo.errors.maxlength">
+                    Flight To cannot be more than 32 characters long.
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h4>Departure: </h4>
+            <ngx-datetime-picker [(selectedDateTime)]="flightDetails.dateTimeDeparture"></ngx-datetime-picker>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <div *ngIf="dateValidation && showDateValidation" class="alert alert-danger">
+            Arrival should be greater than departure
+        </div>
+    </form>
+</div>
+<div *ngIf="searchEnable">
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Flight From</th>
+                <th>Flight To</th>
+                <th>Airlines</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Ready</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let flight of flights | search:term">
+                <td><i class="fa fa-plane" title="to"></i>{{flight.flightFrom}}</td>
+                <td><i class="fa fa-plane" title="to"></i>{{flight.flightTo}}</td>
+                <td>{{flight.airlines}}</td>
+                <td>{{flight.dateTimeDeparture}}</td>
+                <td>{{flight.dateTimeArrival}}</td>
+                <td><button>Book</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
